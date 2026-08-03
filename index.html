@@ -11,7 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=20260803l">
-  <link rel="stylesheet" href="boy.css?v=20260803m">
+  <link rel="stylesheet" href="boy.css?v=20260803n">
+  <link rel="stylesheet" href="boy-image.css?v=20260803n">
   <link rel="stylesheet" href="desktop-tune.css?v=20260803m">
 </head>
 <body>
@@ -24,13 +25,7 @@
         </div>
 
         <div class="copy-zone" id="copyZone" aria-hidden="true">
-          <img
-            class="boy-figure"
-            id="boyFigure"
-            alt=""
-            aria-hidden="true"
-            decoding="async"
-          >
+          <div class="boy-figure" id="boyFigure" aria-hidden="true"></div>
           <p class="brand-line" id="brandLine"></p>
           <h1 class="title-line" id="titleLine"></h1>
           <p class="tagline-line" id="taglineLine"></p>
@@ -43,15 +38,6 @@
   </main>
 
   <script src="logo.js?v=20260803k"></script>
-  <script src="boy.js?v=20260803m"></script>
-  <script>
-    (() => {
-      const boyFigure = document.getElementById('boyFigure');
-      if (boyFigure && window.BOY_IMAGE_B64) {
-        boyFigure.src = 'data:image/webp;base64,' + window.BOY_IMAGE_B64;
-      }
-    })();
-  </script>
   <script src="audio-part-1.js?v=20260803k"></script>
   <script src="audio-part-2.js?v=20260803k"></script>
   <script src="audio-part-3.js?v=20260803k"></script>
