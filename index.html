@@ -1,24 +1,125 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#020806">
-  <meta name="description" content="Animated painting of Coach Dinosaur's Endgame Trainer logo.">
-  <title>Coach Dinosaur's Endgame Trainer</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#020806">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Coach Dinosaur's Endgame Trainer</title>
+<style>
+:root{color-scheme:dark;--line:rgba(123,255,202,.22)}
+*{box-sizing:border-box}
+html,body{width:100%;min-height:100%;margin:0}
+body{overflow:hidden;background:radial-gradient(circle at 50% 46%,rgba(34,184,122,.15),transparent 28rem),radial-gradient(circle at 50% 110%,rgba(18,80,62,.25),transparent 42rem),#020806;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.app{min-height:100vh;min-height:100svh;display:grid;place-items:center;padding:clamp(16px,4vw,44px)}
+.stage{position:relative;isolation:isolate;width:min(74vw,68svh,460px);aspect-ratio:1;display:grid;place-items:center;overflow:hidden;border:1px solid var(--line);border-radius:26px;background:linear-gradient(rgba(121,255,198,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(121,255,198,.025) 1px,transparent 1px),radial-gradient(circle,rgba(36,255,166,.065),transparent 58%),rgba(1,10,8,.88);background-size:30px 30px,30px 30px,auto,auto;box-shadow:0 28px 85px rgba(0,0,0,.52),inset 0 0 60px rgba(65,255,183,.035)}
+.stage::before{content:"";position:absolute;inset:11%;border:1px solid rgba(116,255,199,.06);border-radius:50%;box-shadow:0 0 0 30px rgba(116,255,199,.015),0 0 55px rgba(50,255,171,.04)}
+canvas{position:relative;z-index:2;display:block;width:100%;height:100%}
+.scanlines{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:.055;background:repeating-linear-gradient(to bottom,transparent 0,transparent 4px,rgba(163,255,219,.08) 5px);mix-blend-mode:screen}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.error{position:absolute;z-index:5;inset:auto 18px 18px;display:none;color:#d8ffeb;font-size:.82rem;text-align:center}
+@media(max-width:600px){.app{padding:14px}.stage{width:min(84vw,66svh,420px);border-radius:21px}}
+@media(max-height:560px) and (orientation:landscape){.stage{width:min(58vw,78svh,390px)}}
+</style>
 </head>
 <body>
-  <main class="app">
-    <section class="stage" aria-label="Coach Dinosaur's Endgame Trainer logo painting animation">
-      <canvas id="canvas" width="900" height="900"></canvas>
-      <div class="scanline" aria-hidden="true"></div>
-      <p class="sr-only" id="animationStatus" aria-live="polite">Painting the Endgame Trainer logo.</p>
-    </section>
-  </main>
+<main class="app">
+  <section class="stage" aria-label="Animated painting of the Coach Dinosaur Endgame Trainer logo">
+    <canvas id="logoCanvas" width="900" height="900"></canvas>
+    <div class="scanlines" aria-hidden="true"></div>
+    <p class="sr-only" id="status" aria-live="polite">Painting the Endgame Trainer logo.</p>
+    <p class="error" id="error">The logo could not be loaded.</p>
+  </section>
+</main>
+<script>
+(() => {
+  'use strict';
+  const SIZE=900, INSET=92, PAINT=6200, HOLD=2300, FADE=600, TAU=Math.PI*2;
+  const canvas=document.getElementById('logoCanvas');
+  const ctx=canvas.getContext('2d');
+  const status=document.getElementById('status');
+  const error=document.getElementById('error');
+  const mask=document.createElement('canvas');
+  const m=mask.getContext('2d');
+  const painted=document.createElement('canvas');
+  const p=painted.getContext('2d');
+  mask.width=painted.width=SIZE; mask.height=painted.height=SIZE;
+  const img=new Image();
+  const clamp=v=>Math.max(0,Math.min(1,v));
+  const smooth=v=>{v=clamp(v);return v*v*(3-2*v)};
+  const ease=v=>{v=clamp(v);return v<.5?4*v*v*v:1-Math.pow(-2*v+2,3)/2};
+  const phase=(v,a,b)=>smooth((v-a)/(b-a));
+  let started=0, announced=false;
 
-  <img id="logoSource" alt="" hidden>
-  <script src="logo.js"></script>
-  <script src="app.js"></script>
+  function background(time){
+    ctx.clearRect(0,0,SIZE,SIZE);
+    const g=ctx.createRadialGradient(SIZE/2,SIZE/2,30,SIZE/2,SIZE/2,SIZE*.45);
+    g.addColorStop(0,'rgba(35,255,169,.07)');g.addColorStop(.6,'rgba(15,103,73,.02)');g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g;ctx.fillRect(0,0,SIZE,SIZE);
+    ctx.save();ctx.translate(SIZE/2,SIZE/2);ctx.rotate(time*.00008);
+    ctx.strokeStyle='rgba(110,255,195,.035)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(0,0,350,0,TAU);ctx.stroke();ctx.restore();
+  }
+
+  function buildMask(progress){
+    m.clearRect(0,0,SIZE,SIZE);m.save();m.lineCap='round';m.lineJoin='round';
+    const ring=phase(progress,0,.32);
+    if(ring>0){
+      m.strokeStyle='#fff';m.lineWidth=126;m.beginPath();
+      m.arc(SIZE/2,SIZE/2,348,-Math.PI/2,-Math.PI/2+TAU*ease(ring));m.stroke();
+    }
+    const scan=phase(progress,.20,.88);
+    if(scan>0){
+      const y=INSET+(SIZE-INSET*2)*ease(scan), feather=92;
+      m.fillStyle='#fff';m.fillRect(INSET,INSET,SIZE-INSET*2,Math.max(0,y-INSET-feather*.55));
+      const g=m.createLinearGradient(0,y-feather,0,y+feather);
+      g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.55,'rgba(255,255,255,.94)');g.addColorStop(1,'rgba(255,255,255,0)');
+      m.fillStyle=g;m.fillRect(INSET,y-feather,SIZE-INSET*2,feather*2);
+    }
+    const finish=phase(progress,.84,1);
+    if(finish>0){m.fillStyle=`rgba(255,255,255,${finish})`;m.fillRect(INSET,INSET,SIZE-INSET*2,SIZE-INSET*2)}
+    m.restore();
+  }
+
+  function logo(progress,time,opacity){
+    p.clearRect(0,0,SIZE,SIZE);p.globalCompositeOperation='source-over';p.globalAlpha=1;
+    p.drawImage(img,INSET,INSET,SIZE-INSET*2,SIZE-INSET*2);
+    p.globalCompositeOperation='destination-in';p.drawImage(mask,0,0);p.globalCompositeOperation='source-over';
+    const settled=phase(progress,.85,1), pulse=.5+.5*Math.sin(time*.0036);
+    ctx.save();ctx.globalAlpha=opacity*(.42+settled*.19);ctx.shadowColor='#5effb8';ctx.shadowBlur=22+settled*15+pulse*3;ctx.drawImage(painted,0,0);ctx.restore();
+    ctx.save();ctx.globalAlpha=opacity;ctx.drawImage(painted,0,0);ctx.restore();
+  }
+
+  function brushes(progress,time,opacity){
+    const ring=phase(progress,0,.32);
+    if(ring>0&&ring<1){
+      const a=-Math.PI/2+TAU*ease(ring),x=SIZE/2+Math.cos(a)*348,y=SIZE/2+Math.sin(a)*348;
+      const g=ctx.createRadialGradient(x,y,0,x,y,38);g.addColorStop(0,'rgba(235,255,245,.96)');g.addColorStop(.22,'rgba(105,255,192,.64)');g.addColorStop(1,'rgba(70,255,178,0)');
+      ctx.save();ctx.globalCompositeOperation='screen';ctx.globalAlpha=opacity;ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,38,0,TAU);ctx.fill();ctx.restore();
+    }
+    const scan=phase(progress,.20,.88);
+    if(scan>0&&scan<1){
+      const y=INSET+(SIZE-INSET*2)*ease(scan),left=INSET+20,right=SIZE-INSET-20;
+      const g=ctx.createLinearGradient(left,y,right,y);g.addColorStop(0,'rgba(105,255,193,0)');g.addColorStop(.18,'rgba(105,255,193,.2)');g.addColorStop(.5,'rgba(230,255,242,.78)');g.addColorStop(.82,'rgba(105,255,193,.2)');g.addColorStop(1,'rgba(105,255,193,0)');
+      ctx.save();ctx.globalCompositeOperation='screen';ctx.globalAlpha=opacity;ctx.strokeStyle=g;ctx.lineWidth=3;ctx.shadowColor='#65ffbc';ctx.shadowBlur=15;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(right,y);ctx.stroke();ctx.restore();
+    }
+  }
+
+  function frame(now){
+    const total=PAINT+HOLD+FADE, elapsed=(now-started)%total;
+    let progress=1,opacity=1;
+    if(elapsed<PAINT) progress=clamp(elapsed/PAINT);
+    else if(elapsed>PAINT+HOLD) opacity=1-smooth((elapsed-PAINT-HOLD)/FADE);
+    buildMask(progress);background(now);logo(progress,now,opacity);brushes(progress,now,opacity);
+    if(progress===1&&!announced){status.textContent='Endgame Trainer logo painting complete.';announced=true}
+    if(progress<.03&&announced){status.textContent='Painting the Endgame Trainer logo.';announced=false}
+    requestAnimationFrame(frame);
+  }
+
+  img.onload=()=>{started=performance.now();requestAnimationFrame(frame)};
+  img.onerror=()=>{error.style.display='block';status.textContent='The Endgame Trainer logo could not be loaded.'};
+  img.src='data:image/webp;base64,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...';
+})();
+</script>
 </body>
 </html>
