@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="boy-image.css?v=20260803n">
   <link rel="stylesheet" href="desktop-tune.css?v=20260803p">
   <link rel="stylesheet" href="polish.css?v=20260803r">
+  <link rel="stylesheet" href="showcase.css?v=20260803s">
 </head>
 <body>
   <main class="app">
@@ -36,9 +37,39 @@
       <p class="sr-only" id="status" aria-live="polite">Painting the Endgame Trainer logo.</p>
       <p class="error" id="error">The logo could not be loaded.</p>
     </section>
+
+    <section class="showcase" aria-labelledby="showcaseTitle">
+      <div class="showcase-copy">
+        <p class="showcase-kicker">Selected app preview</p>
+        <h2 class="showcase-title" id="showcaseTitle">The dark dashboard fits the brand.</h2>
+        <p class="showcase-text">
+          The darker mockup matches the neon logo, cyber typography, and green-blue lighting while keeping the real training interface easy to recognize.
+        </p>
+        <span class="theme-chip">Dark theme selected</span>
+      </div>
+
+      <div class="device-preview">
+        <img
+          id="dashboardPreviewImage"
+          alt="Dark theme mobile dashboard of Coach Dinosaur's Endgame Trainer"
+          loading="lazy"
+          decoding="async"
+        >
+      </div>
+    </section>
   </main>
 
   <script src="logo.js?v=20260803k"></script>
+  <script src="dashboard-mini-1.js?v=20260803s"></script>
+  <script src="dashboard-mini-2.js?v=20260803s"></script>
+  <script>
+    (() => {
+      const preview = document.getElementById('dashboardPreviewImage');
+      if (preview && window.DASHBOARD_PREVIEW_B64) {
+        preview.src = 'data:image/webp;base64,' + window.DASHBOARD_PREVIEW_B64;
+      }
+    })();
+  </script>
   <script src="audio-part-1.js?v=20260803k"></script>
   <script src="audio-part-2.js?v=20260803k"></script>
   <script src="audio-part-3.js?v=20260803k"></script>
