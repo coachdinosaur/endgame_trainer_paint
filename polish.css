@@ -112,36 +112,125 @@
 @media (max-width: 760px),
        (max-width: 950px) and (orientation: landscape) {
   .copy-zone {
-    padding-inline: clamp(12px, 4vw, 24px);
+    padding: clamp(14px, 3.4vw, 22px) clamp(14px, 4vw, 24px);
+    text-align: left;
   }
 
   .copy-zone::before {
-    inset: -3% 1% -4%;
+    inset: -4% 0 -6%;
     border-radius: 22px;
+    border-color: rgba(121, 255, 198, 0.1);
     background:
-      linear-gradient(180deg, rgba(1, 16, 12, 0.74), rgba(1, 16, 12, 0.48)),
-      radial-gradient(circle at 70% 48%, rgba(84, 255, 180, 0.08), transparent 58%);
+      linear-gradient(90deg,
+        rgba(1, 15, 11, 0.94) 0%,
+        rgba(1, 15, 11, 0.88) 48%,
+        rgba(1, 15, 11, 0.58) 70%,
+        rgba(1, 15, 11, 0.08) 100%),
+      radial-gradient(circle at 22% 44%, rgba(84, 255, 180, 0.1), transparent 56%);
+    box-shadow:
+      inset 0 0 30px rgba(91, 255, 189, 0.03),
+      0 14px 34px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+
+  .copy-zone .brand-line,
+  .copy-zone .title-line,
+  .copy-zone .tagline-line {
+    width: fit-content;
+    max-width: 74%;
+    margin-left: 0;
+    margin-right: auto;
+    text-align: left;
+  }
+
+  .copy-zone .brand-line {
+    font-size: clamp(0.66rem, 2.25vw, 0.86rem);
+  }
+
+  .copy-zone .title-line {
+    font-size: clamp(1.38rem, 5.25vw, 2.3rem);
+    letter-spacing: -0.04em;
+  }
+
+  .copy-zone .tagline-line {
+    font-size: clamp(0.79rem, 2.1vw, 0.96rem);
+    line-height: 1.32;
+    padding-left: 0;
   }
 
   .boy-figure {
-    left: 62%;
-    width: clamp(126px, 33vw, 172px);
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
+    left: auto;
+    right: -6px;
+    top: 50%;
+    bottom: auto;
+    width: clamp(132px, 35vw, 182px);
+    max-height: 200px;
+    background-position: bottom right;
+    -webkit-mask-image:
+      linear-gradient(to left, #000 0%, #000 76%, transparent 100%),
+      linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
+    mask-image:
+      linear-gradient(to left, #000 0%, #000 76%, transparent 100%),
+      linear-gradient(to bottom, #000 0%, #000 80%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+    transform: translate(12px, -43%) scale(0.96);
+    filter:
+      drop-shadow(0 0 15px rgba(111, 255, 202, 0.11))
+      drop-shadow(0 12px 24px rgba(0, 0, 0, 0.42));
   }
 
   .hero.reveal .boy-figure {
-    opacity: 0.24;
+    opacity: 0.46;
+    transform: translate(0, -43%) scale(1);
   }
 
   .tagline-line::before {
-    left: 50%;
-    transform: translateX(-50%) scaleX(0.35);
-    transform-origin: center;
+    left: 0;
+    transform: scaleX(0.35);
+    transform-origin: left center;
   }
 
   .hero.reveal .tagline-line::before {
-    transform: translateX(-50%) scaleX(1);
+    transform: scaleX(1);
+  }
+}
+
+@media (max-width: 360px) {
+  .copy-zone .brand-line,
+  .copy-zone .title-line,
+  .copy-zone .tagline-line {
+    max-width: 72%;
+  }
+
+  .boy-figure {
+    right: -12px;
+    width: clamp(122px, 38vw, 150px);
+  }
+}
+
+@media (max-height: 430px) and (orientation: landscape) {
+  .copy-zone {
+    padding-block: 8px;
+  }
+
+  .copy-zone .brand-line,
+  .copy-zone .title-line,
+  .copy-zone .tagline-line {
+    max-width: 76%;
+  }
+
+  .boy-figure {
+    right: -4px;
+    width: clamp(112px, 24vw, 144px);
+    max-height: 150px;
+    transform: translate(8px, -41%) scale(0.96);
+  }
+
+  .hero.reveal .boy-figure {
+    opacity: 0.42;
+    transform: translate(0, -41%) scale(1);
   }
 }
 
