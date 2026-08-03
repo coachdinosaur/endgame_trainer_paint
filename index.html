@@ -7,19 +7,28 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta name="description" content="Animated painting of Coach Dinosaur's Endgame Trainer logo.">
   <title>Coach Dinosaur's Endgame Trainer</title>
-  <link rel="stylesheet" href="styles.css?v=20260803c">
+  <link rel="stylesheet" href="styles.css?v=20260803d">
 </head>
 <body>
   <main class="app">
-    <section class="stage" aria-label="Animated painting of the Coach Dinosaur Endgame Trainer logo">
-      <canvas id="logoCanvas" width="900" height="900"></canvas>
-      <div class="scanline" aria-hidden="true"></div>
+    <section class="hero" aria-label="Animated intro for Coach Dinosaur's Endgame Trainer">
+      <div class="logo-zone" id="logoZone">
+        <canvas id="logoCanvas" width="900" height="900" aria-label="Endgame Trainer logo animation"></canvas>
+        <div class="scanline" aria-hidden="true"></div>
+      </div>
+
+      <div class="copy-zone" id="copyZone" aria-hidden="true">
+        <p class="brand-line" id="brandLine"></p>
+        <h1 class="title-line" id="titleLine"></h1>
+        <p class="tagline-line" id="taglineLine"></p>
+      </div>
+
       <p class="sr-only" id="status" aria-live="polite">Painting the Endgame Trainer logo.</p>
       <p class="error" id="error">The logo could not be loaded.</p>
     </section>
   </main>
 
-  <script src="logo.js?v=20260803c"></script>
-  <script src="app.js?v=20260803c"></script>
+  <script src="logo.js?v=20260803d"></script>
+  <script src="app.js?v=20260803d"></script>
 </body>
 </html>
