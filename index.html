@@ -3,38 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#04110e">
-  <title>Coach Dinosaur's Endgame Trainer Logo Painter</title>
+  <meta name="theme-color" content="#020806">
+  <meta name="description" content="Animated painting of Coach Dinosaur's Endgame Trainer logo.">
+  <title>Coach Dinosaur's Endgame Trainer</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <main class="app">
-    <header>
-      <div>
-        <p class="eyebrow">Logo Forge</p>
-        <h1>Coach Dinosaur's Endgame Trainer</h1>
-      </div>
-      <div class="status" id="status">Preparing brush…</div>
-    </header>
-
-    <section class="stage" aria-label="Animated logo painting">
+    <section class="stage" aria-label="Coach Dinosaur's Endgame Trainer logo painting animation">
       <canvas id="canvas" width="900" height="900"></canvas>
-      <div class="scanline"></div>
+      <div class="scanline" aria-hidden="true"></div>
+      <p class="sr-only" id="animationStatus" aria-live="polite">Painting the Endgame Trainer logo.</p>
     </section>
-
-    <section class="controls" aria-label="Animation controls">
-      <button class="primary" id="playPause" type="button">Pause</button>
-      <button id="replay" type="button">Replay</button>
-      <input id="progress" type="range" min="0" max="1000" value="0" aria-label="Animation progress">
-      <select id="speed" aria-label="Animation speed">
-        <option value="0.55">0.5×</option>
-        <option value="1" selected>1×</option>
-        <option value="1.5">1.5×</option>
-        <option value="2">2×</option>
-      </select>
-    </section>
-
-    <p class="hint">Space toggles play and pause. Drag the timeline to scrub through the paint animation.</p>
   </main>
 
   <img id="logoSource" alt="" hidden>
