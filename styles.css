@@ -1,7 +1,6 @@
 :root {
   color-scheme: dark;
-  --mint: #79ffc7;
-  --line: rgba(126, 255, 204, 0.22);
+  --line: rgba(123, 255, 202, 0.22);
 }
 
 * {
@@ -10,6 +9,7 @@
 
 html,
 body {
+  width: 100%;
   min-height: 100%;
   margin: 0;
 }
@@ -17,10 +17,10 @@ body {
 body {
   overflow: hidden;
   background:
-    radial-gradient(circle at 50% 45%, rgba(27, 150, 104, 0.13), transparent 24rem),
-    radial-gradient(circle at 50% 110%, rgba(21, 81, 64, 0.22), transparent 42rem),
+    radial-gradient(circle at 50% 46%, rgba(34, 184, 122, 0.15), transparent 28rem),
+    radial-gradient(circle at 50% 110%, rgba(18, 80, 62, 0.25), transparent 42rem),
     #020806;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 .app {
@@ -28,63 +28,40 @@ body {
   min-height: 100svh;
   display: grid;
   place-items: center;
-  padding: clamp(16px, 4vw, 48px);
+  padding: clamp(16px, 4vw, 44px);
 }
 
 .stage {
   position: relative;
   isolation: isolate;
-  width: min(76vw, 70svh, 520px);
+  width: min(74vw, 68svh, 460px);
   aspect-ratio: 1;
   display: grid;
   place-items: center;
   overflow: hidden;
-  padding: clamp(10px, 2vw, 18px);
   border: 1px solid var(--line);
-  border-radius: 28px;
+  border-radius: 26px;
   background:
-    linear-gradient(rgba(121, 255, 199, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(121, 255, 199, 0.025) 1px, transparent 1px),
-    radial-gradient(circle at 50% 50%, rgba(38, 255, 168, 0.07), transparent 56%),
-    rgba(1, 10, 8, 0.84);
+    linear-gradient(rgba(121, 255, 198, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(121, 255, 198, 0.025) 1px, transparent 1px),
+    radial-gradient(circle, rgba(36, 255, 166, 0.065), transparent 58%),
+    rgba(1, 10, 8, 0.88);
   background-size: 30px 30px, 30px 30px, auto, auto;
   box-shadow:
-    0 30px 90px rgba(0, 0, 0, 0.52),
-    inset 0 0 64px rgba(57, 255, 177, 0.035);
-}
-
-.stage::before,
-.stage::after {
-  content: "";
-  position: absolute;
-  pointer-events: none;
-  border-radius: 50%;
+    0 28px 85px rgba(0, 0, 0, 0.52),
+    inset 0 0 60px rgba(65, 255, 183, 0.035);
 }
 
 .stage::before {
-  width: 74%;
-  aspect-ratio: 1;
-  border: 1px solid rgba(119, 255, 199, 0.065);
+  content: "";
+  position: absolute;
+  inset: 11%;
+  pointer-events: none;
+  border: 1px solid rgba(116, 255, 199, 0.06);
+  border-radius: 50%;
   box-shadow:
-    0 0 0 34px rgba(119, 255, 199, 0.018),
-    0 0 60px rgba(54, 255, 173, 0.045);
-}
-
-.stage::after {
-  inset: 12%;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0 74%,
-    rgba(105, 255, 192, 0.055) 79%,
-    transparent 86% 100%
-  );
-  animation: ambient-rotation 18s linear infinite;
-}
-
-@keyframes ambient-rotation {
-  to {
-    transform: rotate(1turn);
-  }
+    0 0 0 30px rgba(116, 255, 199, 0.015),
+    0 0 55px rgba(50, 255, 171, 0.04);
 }
 
 canvas {
@@ -100,12 +77,12 @@ canvas {
   inset: 0;
   z-index: 3;
   pointer-events: none;
-  opacity: 0.075;
+  opacity: 0.055;
   background: repeating-linear-gradient(
     to bottom,
     transparent 0,
     transparent 4px,
-    rgba(159, 255, 216, 0.08) 5px
+    rgba(163, 255, 219, 0.08) 5px
   );
   mix-blend-mode: screen;
 }
@@ -122,25 +99,30 @@ canvas {
   border: 0;
 }
 
+.error {
+  position: absolute;
+  z-index: 5;
+  inset: auto 18px 18px;
+  display: none;
+  margin: 0;
+  color: #d8ffeb;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
 @media (max-width: 600px) {
   .app {
     padding: 14px;
   }
 
   .stage {
-    width: min(86vw, 68svh, 460px);
-    border-radius: 22px;
+    width: min(84vw, 66svh, 420px);
+    border-radius: 21px;
   }
 }
 
 @media (max-height: 560px) and (orientation: landscape) {
   .stage {
-    width: min(64vw, 82svh, 430px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .stage::after {
-    animation: none;
+    width: min(58vw, 78svh, 390px);
   }
 }
