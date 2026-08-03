@@ -17,7 +17,7 @@
   .boy-figure {
     display: block;
     visibility: visible;
-    right: -145px;
+    right: -82px;
     bottom: -24px;
     width: clamp(210px, 20vw, 270px);
     max-height: 300px;
