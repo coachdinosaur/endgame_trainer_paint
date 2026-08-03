@@ -140,13 +140,8 @@ canvas {
 .brand-line,
 .title-line,
 .tagline-line {
-  margin: 0;
-}
-
-.brand-line,
-.title-line,
-.tagline-line {
   min-height: 1em;
+  margin: 0;
 }
 
 .brand-line {
@@ -196,15 +191,8 @@ canvas {
 }
 
 @keyframes blink {
-  0%,
-  49% {
-    opacity: 1;
-  }
-
-  50%,
-  100% {
-    opacity: 0;
-  }
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
 .sr-only {
@@ -230,23 +218,34 @@ canvas {
   text-align: center;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 760px),
+       (max-width: 950px) and (orientation: landscape) {
+  .app {
+    padding: 10px;
+  }
+
   .hero {
-    min-height: min(88svh, 680px);
+    min-height: 92svh;
+    padding: 14px;
+    border-radius: 22px;
+  }
+
+  .logo-zone {
+    width: min(76vw, 52svh, 360px);
   }
 
   .hero.reveal .logo-zone {
-    width: min(56vw, 260px);
-    transform: translateY(calc(-1 * clamp(74px, 12vw, 108px))) scale(0.95);
+    width: min(54vw, 40svh, 250px);
+    transform: translateY(calc(-1 * clamp(58px, 10svh, 86px))) scale(0.95);
   }
 
   .copy-zone {
-    width: min(84vw, 420px);
-    top: calc(50% + clamp(92px, 16vw, 138px));
+    width: min(88vw, 430px);
+    top: calc(50% + clamp(86px, 15svh, 126px));
     left: 50%;
     right: auto;
-    transform: translate(-50%, 18px);
     text-align: center;
+    transform: translate(-50%, 18px);
   }
 
   .hero.reveal .copy-zone {
@@ -258,34 +257,36 @@ canvas {
     text-align: center;
   }
 
-  .tagline-line {
-    margin-inline: auto;
-  }
-}
-
-@media (max-height: 560px) and (orientation: landscape) {
-  .hero {
-    min-height: 92svh;
-  }
-
-  .logo-zone {
-    width: min(62vw, 48svh, 340px);
-  }
-
-  .hero.reveal .logo-zone {
-    width: min(30vw, 28svh, 235px);
-    transform: translateX(calc(-1 * clamp(48px, 8vw, 110px))) scale(0.92);
-  }
-
-  .copy-zone {
-    width: min(48%, 390px);
+  .brand-line {
+    font-size: clamp(0.7rem, 2.4vw, 0.9rem);
   }
 
   .title-line {
-    font-size: clamp(1.8rem, 3vw, 3rem);
+    font-size: clamp(1.65rem, 6vw, 2.65rem);
   }
 
   .tagline-line {
-    font-size: clamp(0.88rem, 0.8vw + 0.44rem, 1rem);
+    margin-inline: auto;
+    margin-top: clamp(9px, 1.5vh, 15px);
+    font-size: clamp(0.82rem, 2.2vw, 1rem);
+  }
+}
+
+@media (max-height: 430px) and (orientation: landscape) {
+  .hero.reveal .logo-zone {
+    width: min(42vw, 35svh, 190px);
+    transform: translateY(-54px) scale(0.94);
+  }
+
+  .copy-zone {
+    top: calc(50% + 72px);
+  }
+
+  .title-line {
+    font-size: clamp(1.45rem, 4.8vw, 2.1rem);
+  }
+
+  .tagline-line {
+    font-size: clamp(0.76rem, 1.9vw, 0.9rem);
   }
 }
