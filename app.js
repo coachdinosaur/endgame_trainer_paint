@@ -13,7 +13,7 @@
   const canvas = document.getElementById('logoCanvas');
   const ctx = canvas.getContext('2d');
   const status = document.getElementById('status');
-  const error = document.getElementById('error');
+  const notice = document.getElementById('error');
   const copyZone = document.getElementById('copyZone');
   const brandLine = document.getElementById('brandLine');
   const titleLine = document.getElementById('titleLine');
@@ -27,6 +27,7 @@
   mask.height = painted.height = SIZE;
 
   const image = new Image();
+  const music = new Audio();
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const paintDuration = reducedMotion ? REDUCED_PAINT_DURATION : NORMAL_PAINT_DURATION;
 
@@ -36,6 +37,8 @@
 
   let paintStart = 0;
   let sequenceStarted = false;
+  let introStarted = false;
+  let awaitingGesture = false;
 
   const clamp = (value) => Math.max(0, Math.min(1, value));
   const smooth = (value) => {
@@ -339,15 +342,102 @@
     setTimeout(revealCopy, HOLD_AFTER_PAINT);
   }
 
+  function resetVisualSequence() {
+    paintStart = 0;
+    sequenceStarted = false;
+    brandLine.textContent = '';
+    titleLine.textContent = '';
+    taglineLine.textContent = '';
+    brandLine.classList.remove('typing');
+    titleLine.classList.remove('typing');
+    taglineLine.classList.remove('typing');
+    hero.classList.remove('reveal');
+    copyZone.setAttribute('aria-hidden', 'true');
+    render(0, performance.now());
+  }
+
+  function hideNotice() {
+    notice.style.display = 'none';
+  }
+
+  function showNotice(message) {
+    notice.textContent = message;
+    notice.style.display = 'block';
+  }
+
+  function removeGestureListeners() {
+    document.removeEventListener('pointerdown', handleUserGesture);
+    document.removeEventListener('keydown', handleUserGesture);
+  }
+
+  async function handleUserGesture(event) {
+    if (event.type === 'keydown' && !['Enter', ' ', 'Spacebar'].includes(event.key)) return;
+    removeGestureListeners();
+    awaitingGesture = false;
+    await startIntro(true);
+  }
+
+  function requestUserGesture() {
+    if (awaitingGesture) return;
+    awaitingGesture = true;
+    showNotice('Tap anywhere to start with music.');
+    status.textContent = 'Waiting for a tap to start the intro with music.';
+    document.addEventListener('pointerdown', handleUserGesture, { once: true });
+    document.addEventListener('keydown', handleUserGesture, { once: true });
+  }
+
+  function startAnimationWithoutMusic() {
+    hideNotice();
+    status.textContent = 'Music could not be played. Starting the animation without sound.';
+    requestAnimationFrame(frame);
+  }
+
+  async function startIntro(fromUserGesture = false) {
+    if (introStarted) return;
+
+    introStarted = true;
+    resetVisualSequence();
+    hideNotice();
+
+    if (!window.OPENING_MUSIC_B64) {
+      startAnimationWithoutMusic();
+      return;
+    }
+
+    music.currentTime = 0;
+
+    try {
+      await music.play();
+      status.textContent = 'Painting the Endgame Trainer logo with music.';
+      requestAnimationFrame(frame);
+    } catch (playError) {
+      introStarted = false;
+
+      if (playError && playError.name === 'NotAllowedError' && !fromUserGesture) {
+        requestUserGesture();
+        return;
+      }
+
+      startAnimationWithoutMusic();
+    }
+  }
+
   function showError(message) {
-    error.textContent = message;
-    error.style.display = 'block';
+    showNotice(message);
     status.textContent = message;
   }
 
+  music.preload = 'auto';
+  music.loop = false;
+  music.volume = 0.82;
+
+  if (window.OPENING_MUSIC_B64) {
+    music.src = 'data:audio/mpeg;base64,' + window.OPENING_MUSIC_B64;
+  }
+
   image.onload = () => {
-    error.style.display = 'none';
-    requestAnimationFrame(frame);
+    hideNotice();
+    startIntro(false);
   };
 
   image.onerror = () => {
